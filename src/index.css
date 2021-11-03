@@ -1,13 +1,49 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@font-face {
+  font-family: 'slRegular';
+  src: url('./assets/fonts/slRegular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'slBold';
+  src: url('./assets/fonts/slBold.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'slCool';
+  src: url('./assets/fonts/slCool.woff2') format('woff2');
+}
+/* invisible ScrollBar - Start */
+html {
+  scrollbar-width: none; /* Firefox */
+  overflow: scroll;
+  overflow-x: hidden;
+  font-size: 62.5%;
+}
+::-webkit-scrollbar {
+  width: 0; /* Remove scrollbar space */
+  background: transparent; /* Optional: just make scrollbar invisible */
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* invisible ScrollBar - End */
+
+body {
+  position: relative;
+  background: #20252b;
+}
+
+h1 {
+  font-size: 3.2em;
+}
+h2 {
+  font-size: 2.4em;
+}
+h3 {
+  font-size: 1.872em;
+}
+h4 {
+  font-size: 1.6em;
+}
+h5 {
+  font-size: 1.328em;
+}
+h6 {
+  font-size: 1.2em;
 }
