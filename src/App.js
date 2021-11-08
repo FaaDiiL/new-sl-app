@@ -27,6 +27,7 @@ import {
   Link,
   useHistory,
 } from 'react-router-dom'
+import QRCode from 'react-qr-code'
 dotenv.config()
 // process.env.<Your_Key>                                                 // This is how you pass your env-Variables as Api-key etc..
 
@@ -369,6 +370,37 @@ const Wrapper = styled.section`
     }
   }
   /* Mobile View Media queries - End */
+
+  /*modal*/
+
+  .modal-wrapper {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background: rgba(0, 0, 0, 0.7);
+    width: 100vw;
+    height: 100vh;
+    .modal {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      padding: 10px;
+      text-align: center;
+      p {
+        color: black;
+      }
+
+      /*
+    This doesn't work
+    margin-left: -25%;
+    margin-top: -25%;
+    */
+    }
+  }
 `
 // Styling - Start
 
@@ -739,7 +771,7 @@ const CountDownTimer = () => {
 }
 
 // When the ticket is bought!
-const TicketBought = () => {
+const TicketBought = ({ setIsOpen }) => {
   // import qr from './assets/img/Qr@2x.svg'
   let history = useHistory()
   const { time, adult, discount } = JSON.parse(
@@ -759,12 +791,12 @@ const TicketBought = () => {
             {discount !== 0 && `${discount} rabatterad`}
           </p>
         </div>
-        <div
-          className='tickets-bottom'
-          onClick={() => history.push('/pick-bike')}
-        >
-          <p>Reservera cykel</p>
-          <div className='tickets-bottom-right'>
+        <div className='tickets-bottom'>
+          <p onClick={() => history.push('/pick-bike')}>Reservera cykel</p>
+          <div
+            className='tickets-bottom-right'
+            onClick={() => setIsOpen((prev) => !prev)}
+          >
             <p>Visa biljett</p>
             <img src={qr} alt='white qr-code icon' />
           </div>
@@ -783,9 +815,16 @@ const ErrorPage = () => {
 }
 
 function App() {
+  const [isOpen, setIsOpen] = useState(false)
   const [isEmpty, setIsEmpty] = useState(
     JSON.parse(localStorage.getItem('userTicket'))
+      ? JSON.parse(localStorage.getItem('userTicket')).time
+      : null
   )
+  const [getStorage, setGetStorage] = useState(
+    JSON.parse(localStorage.getItem('userTicket'))
+  )
+
   function checkExpiration() {
     //check if past expiration date
     let values = JSON.parse(localStorage.getItem('userTicket'))
@@ -798,21 +837,46 @@ function App() {
     }
   }
   function myFunction() {
-    let myInterval = 0.1 * 60 * 1000 // 15 min interval
+    let myInterval = 0.1 * 60 * 1000 // 10 sec interval
     setInterval(function () {
       checkExpiration()
     }, myInterval)
   }
   myFunction()
+
+  /* 
+  .toLocaleString('sv-SE', {
+     timeZone: 'Europe/Stockholm',
+   })
+   */
   return (
     <Router>
       <Switch>
         <Wrapper>
+          {isOpen && (
+            <div
+              className='modal-wrapper'
+              onClick={(e) => {
+                e.stopPropagation()
+                setIsOpen((prev) => !prev)
+              }}
+            >
+              <div className='modal'>
+                <QRCode
+                  value={`${new Date()} enkelbiljett. ${
+                    !isEmpty
+                      ? `${isEmpty.adult} vuxen`
+                      : `${isEmpty.discount} rabatterad`
+                  }`}
+                  title='da'
+                  style={{ margin: 'auto' }}
+                />
+                <p>1 vuxen SL</p>
+              </div>
+            </div>
+          )}
           <Route exact path='/'>
-            {!isEmpty ? <YourTickets /> : <TicketBought />}
-            {/* <YourTickets /> */}
-
-            {/* <TicketBought timeTo={timeTo} /> */}
+            {isEmpty ? <TicketBought setIsOpen={setIsOpen} /> : <YourTickets />}
             <BuyTicketList />
             <HandleTicketsList />
           </Route>
