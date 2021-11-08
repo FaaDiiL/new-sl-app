@@ -460,7 +460,7 @@ const HandleTicketsList = () => {
   )
 }
 //
-const BuyTicket = ({ setTimeTo, setTicket }) => {
+const BuyTicket = ({ setIsEmpty }) => {
   let history = useHistory()
   const [discount, setDiscount] = useState(0)
   const [adult, setAdult] = useState(1)
@@ -513,8 +513,9 @@ const BuyTicket = ({ setTimeTo, setTicket }) => {
   const handleSubmit = () => {
     localStorage.setItem(
       'userTicket',
-      JSON.stringify({ time: setTimeleft(0, 0, 0, 5), adult, discount })
+      JSON.stringify({ time: setTimeleft(0, 1, 15, 0), adult, discount })
     )
+    setIsEmpty({ time: setTimeleft(0, 1, 15, 0), adult, discount })
     history.push('/')
   }
 
@@ -754,7 +755,7 @@ const TicketBought = () => {
           <CountDownTimer />
           <p>Enkelbiljett SL</p>
           <p>
-            {adult & (adult !== '0') && `${adult} vuxen `}
+            {adult !== 0 && `${adult} rabatterad`}
             {discount !== 0 && `${discount} rabatterad`}
           </p>
         </div>
@@ -785,6 +786,24 @@ function App() {
   const [isEmpty, setIsEmpty] = useState(
     JSON.parse(localStorage.getItem('userTicket'))
   )
+  function checkExpiration() {
+    //check if past expiration date
+    let values = JSON.parse(localStorage.getItem('userTicket'))
+      ? JSON.parse(localStorage.getItem('userTicket')).time
+      : null
+    //check "my hour" index here
+    if (values < new Date()) {
+      localStorage.removeItem('userTicket')
+      setIsEmpty(null)
+    }
+  }
+  function myFunction() {
+    let myInterval = 0.1 * 60 * 1000 // 15 min interval
+    setInterval(function () {
+      checkExpiration()
+    }, myInterval)
+  }
+  myFunction()
   return (
     <Router>
       <Switch>
@@ -800,7 +819,7 @@ function App() {
 
           <Route exact path='/buy-ticket'>
             <Header />
-            <BuyTicket />
+            <BuyTicket setIsEmpty={setIsEmpty} />
           </Route>
 
           <Route exact path='/pick-bike'>
