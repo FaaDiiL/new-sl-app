@@ -1,0 +1,8 @@
+.leaflet-container {
+  width: 375px;
+  height: 470px;
+}
+
+.leaflet-bottom.leaflet-right :first-child {
+  display: none;
+}
