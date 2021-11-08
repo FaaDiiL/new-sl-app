@@ -28,7 +28,9 @@ body {
   position: relative;
   background: #20252b;
 }
-
+p {
+  font-size: 1.6em;
+}
 h1 {
   font-size: 3.2em;
   margin: 0;

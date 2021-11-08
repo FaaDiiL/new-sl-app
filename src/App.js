@@ -1,10 +1,4 @@
-import React, {
-  useRef,
-  useState,
-  useEffect,
-  createContext,
-  useContext,
-} from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import './App.css'
 import dotenv from 'dotenv'
@@ -23,8 +17,8 @@ import LeafLet from 'leaflet'
 import {
   BrowserRouter as Router,
   Switch,
+  Redirect,
   Route,
-  Link,
   useHistory,
 } from 'react-router-dom'
 import QRCode from 'react-qr-code'
@@ -44,7 +38,6 @@ const Wrapper = styled.section`
   p {
     font-family: slRegular;
     color: #c1c4cb;
-    font-size: 1.6rem;
   }
   h1,
   h2,
@@ -91,7 +84,6 @@ const Wrapper = styled.section`
       color: white;
     }
     h3 {
-      font-size: 4rem;
       font-family: slBold;
       font-weight: bold;
     }
@@ -162,7 +154,6 @@ const Wrapper = styled.section`
       display: inline-block;
       color: white;
       font-family: slBold;
-      font-size: 1.8rem;
     }
     ul {
       list-style-type: none;
@@ -230,17 +221,17 @@ const Wrapper = styled.section`
     margin-top: 5px;
     padding-top: 14px;
     margin-left: 5px;
-    border-top: 2px solid #2a6fee;
+    border-top: 4px solid #2a6fee;
     display: inline-block;
   }
   /* The empty black box when there is no tickets bought - Start */
   .ticket-placeholder-empty {
     display: flex;
     background: black;
-    margin: 0 5px;
+    margin: 0 0px;
     margin-bottom: 15px;
     border-radius: 8px;
-    height: 100px;
+    height: 90px;
   }
   .ticket-placeholder-empty p {
     margin: auto;
@@ -302,7 +293,6 @@ const Wrapper = styled.section`
         display: block;
         font-family: slRegular;
         margin: 0px auto;
-        font-size: 1.6rem;
       }
       .active {
         color: #80b3f5;
@@ -380,6 +370,7 @@ const Wrapper = styled.section`
     background: rgba(0, 0, 0, 0.7);
     width: 100vw;
     height: 100vh;
+    z-index: 1000;
     .modal {
       display: flex;
       flex-direction: column;
@@ -393,13 +384,8 @@ const Wrapper = styled.section`
       p {
         color: black;
       }
-
-      /*
-    This doesn't work
-    margin-left: -25%;
-    margin-top: -25%;
-    */
     }
+    /* modal end */
   }
 `
 // Styling - Start
@@ -449,15 +435,15 @@ const BuyTicketList = () => {
       </div>
       <ul className='list'>
         <li className='item-first' onClick={() => history.push('/buy-ticket')}>
-          <h3>Enkelbiljett</h3>
+          <h4>Enkelbiljett</h4>
           <p>Obegränsat antal resor inom 75 minuter</p>
         </li>
         <li className='item'>
-          <h3>30-dagarsbiljett</h3>
+          <h4>30-dagarsbiljett</h4>
           <p>För dig som reser regelbundet</p>
         </li>
         <li className='item'>
-          <h3>Övriga biljetter</h3>
+          <h4>Övriga biljetter</h4>
           <p>Se hela biljettutbudet</p>
         </li>
       </ul>
@@ -474,18 +460,18 @@ const HandleTicketsList = () => {
       </div>
       <ul className='list'>
         <li className='item-first'>
-          <h3>Köphistorik och kvitton</h3>
+          <h4>Köphistorik och kvitton</h4>
         </li>
         <li className='item item-double'>
-          <h3>Lägg till nytt betalkort</h3>
+          <h4>Lägg till nytt betalkort</h4>
           <img src={add} alt='white plus sign' />
         </li>
         <li className='item item-double'>
-          <h3>Förlustgaranti</h3>
+          <h4>Förlustgaranti</h4>
           <p>Logga in för att aktivera</p>
         </li>
         <li className='item'>
-          <h3>Återskapa appbiljetter</h3>
+          <h4>Återskapa appbiljetter</h4>
         </li>
       </ul>
     </section>
@@ -688,9 +674,10 @@ const MarkerPopup = ({ position, data, icon }) => {
 }
 
 const BikeMap = () => {
+  // eslint-disable-next-line
   const [center, setCenter] = useState({ lat: 59.325, lng: 18.0723 })
+  // eslint-disable-next-line
   const [zoom, setZoom] = useState(14.5)
-  const position = [59.325, 18.0723]
   return (
     <section id='bikeMap'>
       <div id='map'>
@@ -774,9 +761,7 @@ const CountDownTimer = () => {
 const TicketBought = ({ setIsOpen }) => {
   // import qr from './assets/img/Qr@2x.svg'
   let history = useHistory()
-  const { time, adult, discount } = JSON.parse(
-    localStorage.getItem('userTicket')
-  )
+  const { adult, discount } = JSON.parse(localStorage.getItem('userTicket'))
   return (
     <section id='your-tickets'>
       <div className='sub-title--container'>
@@ -787,7 +772,7 @@ const TicketBought = ({ setIsOpen }) => {
           <CountDownTimer />
           <p>Enkelbiljett SL</p>
           <p>
-            {adult !== 0 && `${adult} rabatterad`}
+            {adult !== 0 && `${adult} vuxen `}
             {discount !== 0 && `${discount} rabatterad`}
           </p>
         </div>
@@ -805,30 +790,19 @@ const TicketBought = ({ setIsOpen }) => {
     </section>
   )
 }
-const ErrorPage = () => {
-  return (
-    <div>
-      <h1>Error 404</h1>
-      <p>Page not found!</p>
-    </div>
-  )
-}
 
 function App() {
   const [isOpen, setIsOpen] = useState(false)
   const [isEmpty, setIsEmpty] = useState(
     JSON.parse(localStorage.getItem('userTicket'))
-      ? JSON.parse(localStorage.getItem('userTicket')).time
+      ? JSON.parse(localStorage.getItem('userTicket'))
       : null
-  )
-  const [getStorage, setGetStorage] = useState(
-    JSON.parse(localStorage.getItem('userTicket'))
   )
 
   function checkExpiration() {
     //check if past expiration date
     let values = JSON.parse(localStorage.getItem('userTicket'))
-      ? JSON.parse(localStorage.getItem('userTicket')).time
+      ? JSON.parse(localStorage.getItem('userTicket'))
       : null
     //check "my hour" index here
     if (values < new Date()) {
@@ -880,7 +854,6 @@ function App() {
             <BuyTicketList />
             <HandleTicketsList />
           </Route>
-
           <Route exact path='/buy-ticket'>
             <Header />
             <BuyTicket setIsEmpty={setIsEmpty} />
@@ -892,6 +865,10 @@ function App() {
           </Route>
           <Route exact path='/bike-screen'></Route>
           <Footer />
+
+          <Route path='*'>
+            <Redirect to='/' />
+          </Route>
         </Wrapper>
       </Switch>
     </Router>
