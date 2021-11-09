@@ -52,6 +52,7 @@ const Wrapper = styled.section`
   #header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     position: sticky;
     top: 0;
     padding: 0 10px;
@@ -130,6 +131,9 @@ const Wrapper = styled.section`
     padding: 14px;
     margin: 0 auto;
     border: none;
+  }
+  .button {
+    padding: 8px;
   }
   #buyTicket {
     display: flex;
@@ -272,7 +276,7 @@ const Wrapper = styled.section`
     width: 100%;
     margin: 0;
     padding: 0;
-    height: 57px;
+    height: 58px;
     background: #20252b;
     border-top: 1px solid #4a4f55;
     ul {
@@ -682,6 +686,7 @@ const MarkerPopup = ({ position, data, id, icon, setSelected }) => {
 }
 
 const BikeMap = () => {
+  let history = useHistory()
   const [selected, setSelected] = useState(null)
   // eslint-disable-next-line
   const [center, setCenter] = useState({ lat: 59.325, lng: 18.0723 })
@@ -923,11 +928,26 @@ const BikeMap = () => {
                 Du har reserverat en cykel på {selected.data}. Tryck på bekräfta
                 knappen för att fortsätta.
               </p>
-              <div>
-                <p></p>
-                <p>Cykel-ID: {selected.id}</p>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <p>
+                  <span style={{ fontWeight: 'bold', fontFamily: 'slBold' }}>
+                    Address:{' '}
+                  </span>
+                  {selected.address}
+                </p>
+                <p>
+                  <span style={{ fontWeight: 'bold', fontFamily: 'slBold' }}>
+                    Cykel-ID:
+                  </span>{' '}
+                  {selected.id}
+                </p>
               </div>
-              <button className='button'>Bekräfta</button>
+              <button
+                className='button'
+                onClick={() => history.push('/bike-screen')}
+              >
+                Bekräfta
+              </button>
             </>
           ) : (
             <>
@@ -1014,6 +1034,76 @@ const TicketBought = ({ setIsOpen }) => {
   )
 }
 
+const BikeSite = ({ isEmpty }) => {
+  let history = useHistory()
+
+  return (
+    <div style={{ height: '680px' }}>
+      <div style={{ height: '46em' }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            background: '#167E50',
+            height: '20em',
+            margin: '2em',
+            borderRadius: '16px',
+          }}
+        >
+          <div style={{ margin: 'auto', textAlign: 'center' }}>
+            <h3>Tid kvar</h3>
+            <CountDownTimer />
+          </div>
+        </div>
+      </div>
+      <div id='bikeMapInfo'>
+        <div
+          style={{
+            margin: 'auto',
+            display: 'flex',
+            justifyContent: 'space-around',
+
+            width: '20em',
+          }}
+        >
+          <img src={bike} alt='White bike icon' />
+          <h3>cykel</h3>
+        </div>
+        <div style={{ padding: '2em' }} className='bottom'>
+          <p>Info:</p>
+          <p>
+            Du har reserverat en cykel på . Tryck på bekräfta knappen för att
+            fortsätta.
+          </p>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}
+          >
+            <p>
+              <span style={{ fontWeight: 'bold', fontFamily: 'slBold' }}>
+                Address: {isEmpty && isEmpty.address}
+              </span>
+            </p>
+            <p>
+              <span style={{ fontWeight: 'bold', fontFamily: 'slBold' }}>
+                Cykel-ID: {isEmpty && isEmpty.id}
+              </span>{' '}
+            </p>
+          </div>
+          <button
+            style={{ background: '#dc3545' }}
+            className='button'
+            onClick={() => history.push('/')}
+          >
+            Avsluta
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
 function App() {
   const [isOpen, setIsOpen] = useState(false)
   const [isEmpty, setIsEmpty] = useState(
@@ -1022,6 +1112,7 @@ function App() {
       : null
   )
 
+  /// Expire Check And Resetter - Start
   function checkExpiration() {
     //check if past expiration date
     let values = JSON.parse(localStorage.getItem('userTicket'))
@@ -1040,6 +1131,8 @@ function App() {
     }, myInterval)
   }
   myFunction()
+
+  /// Expire Check And Resetter - End
 
   /* 
   .toLocaleString('sv-SE', {
@@ -1097,6 +1190,7 @@ function App() {
               </div>
             </div>
           )}
+
           <Route exact path='/'>
             {!isEmpty ? (
               <YourTickets />
@@ -1106,6 +1200,7 @@ function App() {
             <BuyTicketList />
             <HandleTicketsList />
           </Route>
+
           <Route exact path='/buy-ticket'>
             <Header />
             <BuyTicket setIsEmpty={setIsEmpty} />
@@ -1116,12 +1211,15 @@ function App() {
             <BikeMap />
           </Route>
 
-          <Route exact path='/bike-screen'></Route>
+          <Route exact path='/bike-screen'>
+            <Header />
+            <BikeSite isEmpty={isEmpty} />
+          </Route>
           <Footer />
 
-          <Route path='*'>
+          {/* <Route path='*'>
             <Redirect to='/' />
-          </Route>
+          </Route> */}
         </Wrapper>
       </Switch>
     </Router>
