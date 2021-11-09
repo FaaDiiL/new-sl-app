@@ -117,7 +117,8 @@ const Wrapper = styled.section`
   }
 
   /* Buy Ticket View - Star */
-  #buy-btn {
+  #buy-btn,
+  .button {
     background: #2970f0;
     color: #ffffff;
     font-family: slRegular;
@@ -624,7 +625,7 @@ const Header = () => {
 // Marker Icon - End
 
 // Marker with popup
-const MarkerPopup = ({ position, data, icon }) => {
+const MarkerPopup = ({ position, data, id, icon, setSelected }) => {
   const AvailableIcon = LeafLet.icon({
     iconUrl: availableIcon,
     iconRetinaUrl: availableIcon,
@@ -663,10 +664,17 @@ const MarkerPopup = ({ position, data, icon }) => {
       icon={
         icon.toLowerCase() === 'un'
           ? UnAvailableIcon
-          : icon.toLowerCase() === 'cu'
+          : id && icon.toLowerCase() === 'cu'
           ? CurrentIcon
           : AvailableIcon
       }
+      eventHandlers={{
+        click: (e) => {
+          console.log('marker clicked', e)
+          id < 2000 && setSelected({ id, data, position })
+          id >= 2000 && setSelected({ id: null, data: null, position: null })
+        },
+      }}
     >
       <Popup>{data}</Popup>
     </Marker>
@@ -674,10 +682,180 @@ const MarkerPopup = ({ position, data, icon }) => {
 }
 
 const BikeMap = () => {
+  const [selected, setSelected] = useState(null)
   // eslint-disable-next-line
   const [center, setCenter] = useState({ lat: 59.325, lng: 18.0723 })
   // eslint-disable-next-line
   const [zoom, setZoom] = useState(14.5)
+  const unAvailableBikes = [
+    {
+      type: 'FeatureCollection',
+      features: [
+        {
+          type: 'Feature',
+          properties: {
+            id: 2001,
+            address: 'Skeppsbron 48, 111 30 Stockholm',
+          },
+          geometry: {
+            type: 'Point',
+            coordinates: [18.073854083670014, 59.3221009653255],
+          },
+        },
+        {
+          type: 'Feature',
+          properties: {
+            id: 2002,
+            address: 'Skeppsbron 30, 111 30 Stockholm',
+          },
+          geometry: {
+            type: 'Point',
+            coordinates: [18.074830407760885, 59.32401680162444],
+          },
+        },
+        {
+          type: 'Feature',
+          properties: {
+            id: 2003,
+            address: 'Österlånggatan 51, 111 31 Stockholm',
+          },
+          geometry: {
+            type: 'Point',
+            coordinates: [18.073768252980692, 59.323261427636176],
+          },
+        },
+        {
+          type: 'Feature',
+          properties: {
+            id: 2004,
+            address: 'Stora Nygatan, 111 27 Stockholm',
+          },
+          geometry: {
+            type: 'Point',
+            coordinates: [18.0708500095442, 59.32352416831883],
+          },
+        },
+        {
+          type: 'Feature',
+          properties: {
+            id: 2005,
+            address: 'Götgatan 41, 116 21 Stockholm',
+          },
+          geometry: {
+            type: 'Point',
+            coordinates: [18.072912310358202, 59.315781643723106],
+          },
+        },
+        {
+          type: 'Feature',
+          properties: {
+            id: 2006,
+            address: 'Repslagargatan 23, 118 26 Stockholm',
+          },
+          geometry: {
+            type: 'Point',
+            coordinates: [18.071351856686768, 59.31612350577681],
+          },
+        },
+        {
+          type: 'Feature',
+          properties: {
+            id: 2007,
+            address: 'Götgatan 48, 118 26 Stockholm',
+          },
+          geometry: {
+            type: 'Point',
+            coordinates: [18.072499842156272, 59.31555958280601],
+          },
+        },
+        {
+          type: 'Feature',
+          properties: {
+            id: 2008,
+            address: 'Östgötagatan 2, 116 25 Stockholm',
+          },
+          geometry: {
+            type: 'Point',
+            coordinates: [18.07502111865471, 59.317546959048826],
+          },
+        },
+      ],
+    },
+  ]
+  const availableBikes = [
+    {
+      type: 'FeatureCollection',
+      features: [
+        {
+          type: 'Feature',
+          properties: {
+            id: 1001,
+            address: 'Hornsgatan 15, 118 46 Stockholm',
+          },
+          geometry: {
+            type: 'Point',
+            coordinates: [18.068729606507596, 59.31896639538102],
+          },
+        },
+        {
+          type: 'Feature',
+          properties: {
+            id: 1002,
+            address: 'Peter Myndes backe 3, 116 46 Stockholm',
+          },
+          geometry: {
+            type: 'Point',
+            coordinates: [18.07186600406549, 59.31946327066],
+          },
+        },
+        {
+          type: 'Feature',
+          properties: {
+            id: 1003,
+            address: 'Hornsgatan 1, 118 46 Stockholm',
+          },
+          geometry: {
+            type: 'Point',
+            coordinates: [18.07039032876245, 59.31977077060217],
+          },
+        },
+        {
+          type: 'Feature',
+          properties: {
+            id: 1004,
+            address: 'Bellmansgatan 1, 118 20 Stockholm',
+          },
+          geometry: {
+            type: 'Point',
+            coordinates: [18.06460998954469, 59.32071705089169],
+          },
+        },
+        {
+          type: 'Feature',
+          properties: {
+            id: 1005,
+            address: 'Skeppsbron 46, 111 30 Stockholm',
+          },
+          geometry: {
+            type: 'Point',
+            coordinates: [18.07390116159388, 59.32233737408552],
+          },
+        },
+        {
+          type: 'Feature',
+          properties: {
+            id: 1006,
+            address: 'Kornhamnstorg 61, 111 27 Stockholm',
+          },
+          geometry: {
+            type: 'Point',
+            coordinates: [18.072521200867797, 59.32237709067251],
+          },
+        },
+      ],
+    },
+  ]
+
   return (
     <section id='bikeMap'>
       <div id='map'>
@@ -686,21 +864,50 @@ const BikeMap = () => {
             attribution='&copy; <a href="http://sl-ext-app.surge.sh">Sl Map!</a>'
             url='https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZmFkaWxtYXAiLCJhIjoiY2t1dWU5OGp3MWtvbzJvcXZybzlpNXFhcSJ9.893BxZCnUJJSSZPa475ibA'
           />
-          <MarkerPopup
-            position={[59.325, 18.0723]}
-            data={'Bike not available to pick.'}
-            icon={'un'}
-          />
-          <MarkerPopup
-            position={[59.323, 18.0738]}
-            data={'Tullgränd 53, Stockholm, Sweden'}
-            icon={'av'}
-          />
-          <MarkerPopup
-            position={[59.324, 18.0708]}
-            data={'Espresso House, Västralånggatan 40, Stockholm Sweden '}
-            icon={'cu'}
-          />
+
+          {unAvailableBikes.map((test) =>
+            test.features.map(
+              (
+                {
+                  properties: { address, id },
+                  geometry: {
+                    coordinates: [longitude, latitude],
+                  },
+                },
+                i
+              ) => (
+                <MarkerPopup
+                  key={id}
+                  position={[latitude, longitude]}
+                  data={address}
+                  icon={'un'}
+                />
+              )
+            )
+          )}
+
+          {availableBikes.map((test) =>
+            test.features.map(
+              (
+                {
+                  properties: { address, id },
+                  geometry: {
+                    coordinates: [longitude, latitude],
+                  },
+                },
+                i
+              ) => (
+                <MarkerPopup
+                  key={id}
+                  position={[latitude, longitude]}
+                  data={address}
+                  id={id}
+                  icon={selected && selected.id === id ? 'cu' : 'av'}
+                  setSelected={setSelected}
+                />
+              )
+            )
+          )}
         </MapContainer>
       </div>
       <div id='bikeMapInfo'>
@@ -709,11 +916,27 @@ const BikeMap = () => {
           <h3>cykel</h3>
         </div>
         <div className='bottom'>
-          <p>Info:</p>
-          <p>
-            Välj en av de svart markerade cyklarna på kartan som du vill
-            reservera.
-          </p>
+          {selected ? (
+            <>
+              <p>Info:</p>
+              <p>
+                Du har reserverat en cykel på {selected.data}. Tryck på bekräfta
+                knappen för att fortsätta.
+              </p>
+              <div>
+                <p></p>
+                <p>Cykel-ID: {selected.id}</p>
+              </div>
+              <button className='button'>Bekräfta</button>
+            </>
+          ) : (
+            <>
+              <p>
+                Var vänlig och välj en cykel med svart cirkel, då röda är
+                upptagna för tillfället.
+              </p>
+            </>
+          )}
         </div>
       </div>
     </section>
@@ -754,7 +977,7 @@ const CountDownTimer = () => {
     return () => clearInterval(timer)
   }, [])
 
-  return <h3>{timeLeft}</h3>
+  return <h3 style={{ fontSize: '3.5em' }}>{timeLeft}</h3>
 }
 
 // When the ticket is bought!
@@ -837,20 +1060,49 @@ function App() {
             >
               <div className='modal'>
                 <QRCode
-                  value={`${new Date()} enkelbiljett. ${
-                    !isEmpty
-                      ? `${isEmpty.adult} vuxen`
-                      : `${isEmpty.discount} rabatterad`
-                  }`}
+                  value={`\n Enkelbiljett SL.
+                  ${
+                    isEmpty.adult & (isEmpty.adult !== 0) &&
+                    ` ${isEmpty.adult} vuxen `
+                  }
+                  ${
+                    isEmpty.discount & (isEmpty.discount !== 0) &&
+                    `${isEmpty.discount} rabatterad`
+                  }
+                  ${
+                    isEmpty.time &&
+                    `
+                    \n Expires: 
+                    ${new Date(isEmpty.time)
+                      .toISOString()
+                      .replace(/T/, ' ')
+                      .replace(/\..+/, '')}
+                      `
+                  }
+                  `}
                   title='da'
                   style={{ margin: 'auto' }}
                 />
-                <p>1 vuxen SL</p>
+                <p>{isEmpty.adult !== 0 && `${isEmpty.adult} vuxen `}</p>
+                <p>
+                  {isEmpty.discount !== 0 && `${isEmpty.discount} rabatterad`}
+                </p>
+                <p>
+                  {isEmpty &&
+                    `Expires: ${new Date(isEmpty.time)
+                      .toISOString()
+                      .replace(/T/, ' ')
+                      .replace(/\..+/, '')}`}
+                </p>
               </div>
             </div>
           )}
           <Route exact path='/'>
-            {isEmpty ? <TicketBought setIsOpen={setIsOpen} /> : <YourTickets />}
+            {!isEmpty ? (
+              <YourTickets />
+            ) : (
+              <TicketBought setIsOpen={setIsOpen} />
+            )}
             <BuyTicketList />
             <HandleTicketsList />
           </Route>
@@ -863,6 +1115,7 @@ function App() {
             <Header />
             <BikeMap />
           </Route>
+
           <Route exact path='/bike-screen'></Route>
           <Footer />
 
