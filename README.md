@@ -1,70 +1,59 @@
-# Getting Started with Create React App
+# New-SL-App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## _This is a extension for the sl app that lets you use bikes!_
 
-## Available Scripts
+This is a app for you when you need som other alternative to busses, trains, boats.
+Bikes is now available!
 
-In the project directory, you can run:
+- Buy a single ticket
+- Click on the reserve bike text on the ticket.
+- Select a bike with a black background.
+- Press on the confirm button
+- When the bike journey ends press the red exit button
 
-### `npm start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- Choose a more green alternative modes of transport.
+- pick a bike close to you from a map view.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Tech
 
-### `npm test`
+New-Sl-App uses a number of open source projects to work properly:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- [ReactJS] - HTML enhanced for web apps!
+- [ReactRouter] - Handleing the rotes on the page
+- [StyledComponents] - This is for styling the code.
+- [node.js] - Installing pakages
 
-### `npm run build`
+## Installation
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+New-SL-App requires [Node.js](https://nodejs.org/) v10+ to run.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Install the dependencies and devDependencies and start the server.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```sh
+cd new-sl-app
+git clone https://github.com/FaaDiiL/new-sl-app.git .
+npm i
+npm start
+```
 
-### `npm run eject`
+do not forget to add your api-key if it's not working.
+Go to src/components/bikeMap/BikeMap.js
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```js
+const accessToken =
+  'pk.eyJ1IjoiZmFkaWxtYXAiLCJhIjoiY2t1dWU5OGp3MWtvbzJvcXZybzlpNXFhcSJ9.893BxZCnUJJSSZPa475ibA'
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## License
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+MIT
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+**Free Software, Ohh Yeah!**
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+[//]: # 'Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax'
+[reactjs]: https://reactjs.org/
+[reactrouter]: https://reactrouter.com/
+[styledcomponents]: https://styled-components.com/
+[node.js]: http://nodejs.org

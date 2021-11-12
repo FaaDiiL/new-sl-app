@@ -184,13 +184,15 @@ const BikeMap = () => {
     },
   ]
 
+  const accessToken =
+    'pk.eyJ1IjoiZmFkaWxtYXAiLCJhIjoiY2t1dWU5OGp3MWtvbzJvcXZybzlpNXFhcSJ9.893BxZCnUJJSSZPa475ibA'
   return (
     <section id='bikeMap'>
       <div id='map'>
         <MapContainer center={center} zoom={zoom} scrollWheelZoom={true}>
           <TileLayer
             attribution='&copy; <a href="http://sl-ext-app.surge.sh">Sl Map!</a>'
-            url='https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZmFkaWxtYXAiLCJhIjoiY2t1dWU5OGp3MWtvbzJvcXZybzlpNXFhcSJ9.893BxZCnUJJSSZPa475ibA'
+            url={`https://api.mapbox.com/styles/v1/mapbox/streets-v10/tiles/256/{z}/{x}/{y}?access_token=${accessToken}`}
           />
 
           {unAvailableBikes.map((test) =>
