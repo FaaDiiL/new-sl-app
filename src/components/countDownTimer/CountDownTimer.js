@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
 const CountDownTimer = () => {
+  // eslint-disable-next-line
   const [timeLeft, setTimeLeft] = useState(null)
   const [h, setH] = useState(null)
   const [m, setM] = useState(null)

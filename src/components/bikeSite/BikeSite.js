@@ -5,6 +5,7 @@ import bike from '../../assets/img/bike-icon.svg'
 
 const BikeSite = ({ isEmpty }) => {
   let history = useHistory()
+  // eslint-disable-next-line
   const [selected, setSelected] = useState(
     localStorage.getItem('selected')
       ? JSON.parse(localStorage.getItem('selected'))
