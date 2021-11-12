@@ -361,7 +361,7 @@ const Wrapper = styled.section`
     display: flex;
     flex-direction: column;
     margin: auto;
-    height: 64em;
+    min-height: 64em;
     justify-content: space-between;
     #bike-site-card {
       display: flex;
@@ -382,7 +382,7 @@ const Wrapper = styled.section`
     }
     #bike-site-info {
       background: #4c5157;
-      height: 17.01em;
+      min-height: 17.01em;
       width: 100%;
       .top {
         display: flex;
@@ -423,7 +423,7 @@ const Wrapper = styled.section`
 
   /* Mobile View Media queries - Start */
   @media only screen and (max-width: 600px) {
-    height: 100vh;
+    height: 80vh;
     border: none;
     margin-bottom: -57px;
     #handle-tickets,
@@ -439,6 +439,39 @@ const Wrapper = styled.section`
       left: 0;
       width: 100%;
       margin-bottom: 0px;
+    }
+
+    #bikeMap {
+      margin-top: -30px;
+      padding-bottom: 0px;
+      margin-bottom: 0px;
+      #map {
+        margin-top: 0px;
+        .top {
+          height: 10px;
+        }
+      }
+      margin-top: 0px;
+      #bikeMapInfo {
+        height: 26vh;
+        margin: -140px 0;
+      }
+    }
+
+    #bikeSiteInfo {
+      margin-top: -30px;
+      padding-bottom: 0px;
+      margin-bottom: 0px;
+      #bike-site-card {
+        margin-top: 130px;
+        .top {
+          height: 180px;
+        }
+      }
+      margin-top: -80px;
+      #bike-site-info {
+        height: 30.7vh;
+      }
     }
   }
   /* Mobile View Media queries - End */

@@ -50,7 +50,6 @@ const MarkerPopup = ({ position, data, id, icon, setSelected }) => {
       }
       eventHandlers={{
         click: (e) => {
-          console.log('marker clicked', e)
           if (id < 2000) {
             setSelected({ id, data, position })
             localStorage.setItem(
@@ -59,7 +58,6 @@ const MarkerPopup = ({ position, data, id, icon, setSelected }) => {
             )
           }
           if (id >= 2000) {
-            console.log('FuckYou')
             setSelected(null)
             localStorage.removeItem('selected')
           }

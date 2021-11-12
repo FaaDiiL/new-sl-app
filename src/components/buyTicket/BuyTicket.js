@@ -29,7 +29,6 @@ const BuyTicket = ({ setIsEmpty }) => {
   }
 
   const handleClick = (e) => {
-    console.log(e.target.id)
     switch (e.target.id) {
       case 'decreaseAdult':
         setAdult((prev) => prev - 1)
