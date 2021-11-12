@@ -11,6 +11,10 @@ Bikes is now available!
 - Press on the confirm button
 - When the bike journey ends press the red exit button
 
+## Demo
+
+- [Demo] - Try it out!
+
 ## Features
 
 - Choose a more green alternative modes of transport.
@@ -53,6 +57,7 @@ MIT
 **Free Software, Ohh Yeah!**
 
 [//]: # 'Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax'
+[demo]: https://new-sl-app.surge.sh/
 [reactjs]: https://reactjs.org/
 [reactrouter]: https://reactrouter.com/
 [styledcomponents]: https://styled-components.com/
